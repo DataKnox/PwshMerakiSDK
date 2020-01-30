@@ -3,12 +3,12 @@ Sample code works like so:
 Clone the repo to a folder of your desire
 
 ```
-git clone https://github.com/DataKnox/CodeSamples.git
+git clone https://github.com/DataKnox/PwshMerakiSDK.git
 ```
 
 Open up your command line and navigate to..
 ```
-cd $basefolder/CodeSamples/Powershell/MerakiSDK/GetMerakiOrgsCmdlet
+cd $basefolder/PwshMerakiSDK/bin/Debug/netstandard2.0/GetMerakiOrgsCmdlet.dll   
 ```
 
 Run dotnet build. Note this was created using .Net Core 3.1 and tested with Powershell Core 7
@@ -20,10 +20,12 @@ Launch Powershell
 pwsh
 or
 pwsh-preview
+or
+powershell
 ```
 Import the module
 ```
-Import-Module $basefolder/CodeSamples/Powershell/MerakiSDK/GetMerakiOrgsCmdlet/bin/Debug/netstandard2.0/GetMerakiOrgsCmdlet.dll
+Import-Module $basefolder/MerakiSDK/PwshMerakiSDK/bin/Debug/netstandard2.0/GetMerakiOrgsCmdlet.dll
 ```
 Test your script
 ```
