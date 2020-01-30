@@ -9,9 +9,9 @@ using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
 {
-    [Cmdlet(VerbsCommon.Get, "merakidevices")]
-    [OutputType(typeof(MerakiDevice))]
-    public class GetMerakiDevsCommand : PSCmdlet
+    [Cmdlet(VerbsCommon.Get, "wifidevicestats")]
+    [OutputType(typeof(MerakiDeviceStats))]
+    public class GetMerakiDeviceStatsCommand : PSCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -20,15 +20,14 @@ namespace GetMerakiOrgsCmdlet
             ValueFromPipelineByPropertyName = true)]
         public string Token { get; set; }
 
-        [Parameter(
+       [Parameter(
             Mandatory = true,
             Position = 1,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public string netid { get; set; }
 
-        // This method creates the API call and returns a Task object that can be waited on
-        private static async Task<IList<MerakiDevice>> GetDevs(string Token, string netid)
+        private static async Task<IList<MerakiDeviceStats>> GetDeviceStats(string Token, string netid)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -36,17 +35,16 @@ namespace GetMerakiOrgsCmdlet
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
+
+                var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/devices/connectionStats?timespan=600000.00");
                 
-                var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/devices");
-                
-                return await JsonSerializer.DeserializeAsync<IList<MerakiDevice>>(await streamTask);
+                return await JsonSerializer.DeserializeAsync<IList<MerakiDeviceStats>>(await streamTask);
             }
-            
         }
-        //This method calls GetNets and waits on the result. It then returns the List of MerakiDevice objects
-        private static  IList<MerakiDevice> ProcessRecordAsync(string Token, string netid)
+
+        private static  IList<MerakiDeviceStats> ProcessRecordAsync(string Token, string netid)
         {
-            var task = GetDevs(Token, netid);
+            var task = GetDeviceStats(Token, netid);
             task.Wait();
             var result = task.Result;
             return result;
@@ -57,7 +55,7 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("Begin!");
             WriteVerbose(Token);
-            WriteVerbose(netid);
+            WriteVerbose($"netid is {netid}");
         }
 
         // This method will be called for each input received from the pipeline to this cmdlet; if no input is received, this method is not called
@@ -77,19 +75,20 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("End!");
         }
-    }
-        public class MerakiDevice 
+    } // end Get-MerakiOrgs
+
+    public class ConnectionStats
     {
-        public string address { get; set; }
-        public string firmware { get; set; }
-        public string floorPlanId { get; set; }
-        public string lanIp { get; set; }
-        public double lat { get; set; }
-        public double lng { get; set; }
-        public string mac { get; set; }
-        public string model { get; set; }
-        public string networkId { get; set; }
+        public int assoc { get; set; }
+        public int auth { get; set; }
+        public int dhcp { get; set; }
+        public int dns { get; set; }
+        public int success { get; set; }
+    }
+
+    public class MerakiDeviceStats
+    {
         public string serial { get; set; }
-        public string switchProfileId { get; set; }
+        public ConnectionStats connectionStats { get; set; }
     }
 }
