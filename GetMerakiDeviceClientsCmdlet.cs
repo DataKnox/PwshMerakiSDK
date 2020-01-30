@@ -43,7 +43,7 @@ namespace GetMerakiOrgsCmdlet
             }
             
         }
-        //This method calls GetNets and waits on the result. It then returns the List of MerakiDevice objects
+        //This method calls GetNets and waits on the result. It then returns the List of MerakiDeviceClients objects
         private static  IList<DeviceClient> ProcessRecordAsync(string Token, string serial)
         {
             var task = GetDevClients(Token, serial);
