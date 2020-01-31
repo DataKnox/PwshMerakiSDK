@@ -14,3 +14,11 @@
 /home/knox/Documents/MerakiSDK/PwshMerakiSDK/obj/Debug/netstandard2.0/GetMerakiOrgsCmdlet.AssemblyInfo.cs
 /home/knox/Documents/MerakiSDK/PwshMerakiSDK/obj/Debug/netstandard2.0/GetMerakiOrgsCmdlet.dll
 /home/knox/Documents/MerakiSDK/PwshMerakiSDK/obj/Debug/netstandard2.0/GetMerakiOrgsCmdlet.pdb
+d:\MerakiSDK\PwshMerakiSDK\bin\Debug\netstandard2.0\GetMerakiOrgsCmdlet.deps.json
+d:\MerakiSDK\PwshMerakiSDK\bin\Debug\netstandard2.0\GetMerakiOrgsCmdlet.dll
+d:\MerakiSDK\PwshMerakiSDK\bin\Debug\netstandard2.0\GetMerakiOrgsCmdlet.pdb
+d:\MerakiSDK\PwshMerakiSDK\obj\Debug\netstandard2.0\GetMerakiOrgsCmdlet.csprojAssemblyReference.cache
+d:\MerakiSDK\PwshMerakiSDK\obj\Debug\netstandard2.0\GetMerakiOrgsCmdlet.AssemblyInfoInputs.cache
+d:\MerakiSDK\PwshMerakiSDK\obj\Debug\netstandard2.0\GetMerakiOrgsCmdlet.AssemblyInfo.cs
+d:\MerakiSDK\PwshMerakiSDK\obj\Debug\netstandard2.0\GetMerakiOrgsCmdlet.dll
+d:\MerakiSDK\PwshMerakiSDK\obj\Debug\netstandard2.0\GetMerakiOrgsCmdlet.pdb

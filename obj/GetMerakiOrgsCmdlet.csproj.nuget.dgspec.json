@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/home/knox/Documents/MerakiSDK/PwshMerakiSDK/GetMerakiOrgsCmdlet.csproj": {}
+    "d:\\MerakiSDK\\PwshMerakiSDK\\GetMerakiOrgsCmdlet.csproj": {}
   },
   "projects": {
-    "/home/knox/Documents/MerakiSDK/PwshMerakiSDK/GetMerakiOrgsCmdlet.csproj": {
+    "d:\\MerakiSDK\\PwshMerakiSDK\\GetMerakiOrgsCmdlet.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/knox/Documents/MerakiSDK/PwshMerakiSDK/GetMerakiOrgsCmdlet.csproj",
+        "projectUniqueName": "d:\\MerakiSDK\\PwshMerakiSDK\\GetMerakiOrgsCmdlet.csproj",
         "projectName": "GetMerakiOrgsCmdlet",
-        "projectPath": "/home/knox/Documents/MerakiSDK/PwshMerakiSDK/GetMerakiOrgsCmdlet.csproj",
-        "packagesPath": "/home/knox/.nuget/packages/",
-        "outputPath": "/home/knox/Documents/MerakiSDK/PwshMerakiSDK/obj/",
+        "projectPath": "d:\\MerakiSDK\\PwshMerakiSDK\\GetMerakiOrgsCmdlet.csproj",
+        "packagesPath": "C:\\Users\\khutc\\.nuget\\packages\\",
+        "outputPath": "d:\\MerakiSDK\\PwshMerakiSDK\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/knox/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\khutc\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netstandard2.0"
@@ -62,7 +62,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.101/RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
