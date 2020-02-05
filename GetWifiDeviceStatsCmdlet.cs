@@ -20,11 +20,11 @@ namespace GetMerakiOrgsCmdlet
             ValueFromPipelineByPropertyName = true)]
         public string Token { get; set; }
 
-       [Parameter(
-            Mandatory = true,
-            Position = 1,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true)]
+        [Parameter(
+             Mandatory = true,
+             Position = 1,
+             ValueFromPipeline = true,
+             ValueFromPipelineByPropertyName = true)]
         public string netid { get; set; }
 
         private static async Task<IList<MerakiDeviceStats>> GetDeviceStats(string Token, string netid)
@@ -37,12 +37,12 @@ namespace GetMerakiOrgsCmdlet
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
 
                 var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/devices/connectionStats?timespan=600000.00");
-                
+
                 return await JsonSerializer.DeserializeAsync<IList<MerakiDeviceStats>>(await streamTask);
             }
         }
-
-        private static  IList<MerakiDeviceStats> ProcessRecordAsync(string Token, string netid)
+        // random comment
+        private static IList<MerakiDeviceStats> ProcessRecordAsync(string Token, string netid)
         {
             var task = GetDeviceStats(Token, netid);
             task.Wait();
@@ -63,8 +63,8 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("Entering Get Orgs call");
             var list = ProcessRecordAsync(Token, netid);
-            
-            WriteObject(list,true);
+
+            WriteObject(list, true);
 
 
             WriteVerbose("Exiting foreach");
