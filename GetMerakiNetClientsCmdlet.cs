@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
@@ -80,7 +81,8 @@ namespace GetMerakiOrgsCmdlet
     {         
         public string description { get; set; }
         public string firstSeen { get; set; }
-        public string id { get; set; }
+        [JsonPropertyName("id")]
+        public string clientid { get; set; }
         public string ip { get; set; }
         public string ip6 { get; set; }
         public string lastSeen { get; set; }
