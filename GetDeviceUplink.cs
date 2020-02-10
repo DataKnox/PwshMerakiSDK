@@ -36,7 +36,7 @@ namespace GetMerakiOrgsCmdlet
         public string netid { get; set; }
 
         // This method creates the API call and returns a Task object that can be waited on
-        private static async Task<IList<DeviceUplink>> GetDevUplinks(string Token, string serial)
+        private static async Task<IList<DeviceUplink>> GetDevUplinks(string Token, string serial, string netid)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -52,9 +52,9 @@ namespace GetMerakiOrgsCmdlet
             
         }
         //This method calls GetNets and waits on the result. It then returns the List of MerakiDeviceClients objects
-        private static  IList<DeviceUplink> ProcessRecordAsync(string Token, string serial)
+        private static  IList<DeviceUplink> ProcessRecordAsync(string Token, string serial, string netid)
         {
-            var task = GetDevUplinks(Token, serial);
+            var task = GetDevUplinks(Token, serial, netid);
             task.Wait();
             var result = task.Result;
             return result;
@@ -73,7 +73,7 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("Entering Get Orgs call");
             
-            var list = ProcessRecordAsync(Token, serial);
+            var list = ProcessRecordAsync(Token, serial, netid);
             
             WriteObject(list,true);
 
