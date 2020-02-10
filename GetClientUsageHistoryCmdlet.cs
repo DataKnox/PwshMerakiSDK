@@ -30,7 +30,7 @@ namespace GetMerakiOrgsCmdlet
 
         [Parameter(
             Mandatory = true,
-            Position = 1,
+            Position = 2,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
         public string clientid { get; set; }
