@@ -10,9 +10,9 @@ using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
 {
-    [Cmdlet(VerbsCommon.Get, "NetClientEvents")]
-    [OutputType(typeof(ClientEvent))]
-    public class GetNetClientEventsCommand : PSCmdlet
+     [Cmdlet(VerbsCommon.Get, "OrgDevices")]
+    [OutputType(typeof(OrgDevice))]
+    public class GetOrgDevicesCommand : PSCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -21,21 +21,15 @@ namespace GetMerakiOrgsCmdlet
             ValueFromPipelineByPropertyName = true)]
         public string Token { get; set; }
 
-       [Parameter(
+        [Parameter(
             Mandatory = true,
             Position = 1,
             ValueFromPipeline = true,
             ValueFromPipelineByPropertyName = true)]
-        public string netid { get; set; }
+        public string orgid { get; set; }
 
-        [Parameter(
-            Mandatory = true,
-            Position = 2,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true)]
-        public string clientid { get; set; }
-
-        private static async Task<IList<ClientEvent>> GetClientEvent(string Token, string netid, string clientid)
+        // This method creates the API call and returns a Task object that can be waited on
+        private static async Task<IList<OrgDevice>> GetDevs(string Token, string orgid)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -43,16 +37,17 @@ namespace GetMerakiOrgsCmdlet
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
-
-                var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/clients/{clientid}/events?perPage=3&startingAfter=&endingBefore=");
                 
-                return await JsonSerializer.DeserializeAsync<IList<ClientEvent>>(await streamTask);
+                var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/organizations/{orgid}/devices");
+                
+                return await JsonSerializer.DeserializeAsync<IList<OrgDevice>>(await streamTask);
             }
+            
         }
-
-        private static  IList<ClientEvent> ProcessRecordAsync(string Token, string netid, string clientid)
+        //This method calls GetNets and waits on the result. It then returns the List of MerakiNet objects
+        private static  IList<OrgDevice> ProcessRecordAsync(string Token, string orgid)
         {
-            var task = GetClientEvent(Token, netid, clientid);
+            var task = GetDevs(Token, orgid);
             task.Wait();
             var result = task.Result;
             return result;
@@ -69,7 +64,7 @@ namespace GetMerakiOrgsCmdlet
         protected override void ProcessRecord()
         {
             WriteVerbose("Entering Get Orgs call");
-            var list = ProcessRecordAsync(Token, netid, clientid);
+            var list = ProcessRecordAsync(Token, orgid);
             
             WriteObject(list,true);
 
@@ -82,19 +77,21 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("End!");
         }
-    } // end Get-MerakiOrgs
-
-    public class Details
+    } //end Get-MerakiNets
+    
+    public class OrgDevice
     {
-        public string vap { get; set; }
-        public string on_packet { get; set; }
-    }
-
-    public class ClientEvent
-    {
-        public string deviceSerial { get; set; }
-        public int occurredAt { get; set; }
-        public string type { get; set; }
-        public Details details { get; set; }
+        public string name { get; set; }
+        public double lat { get; set; }
+        public double lng { get; set; }
+        public string address { get; set; }
+        public string notes { get; set; }
+        public string tags { get; set; }
+        public string networkId { get; set; }
+        public string serial { get; set; }
+        public string model { get; set; }
+        public string mac { get; set; }
+        public string lanIp { get; set; }
+        public string firmware { get; set; }
     }
 }
