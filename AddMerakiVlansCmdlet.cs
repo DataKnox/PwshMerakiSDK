@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace GetMerakiOrgsCmdlet
 {
     [Cmdlet(VerbsCommon.Add, "merakivlans")]
-    [OutputType(typeof(CreateMerakiVlan))]
+    [OutputType(typeof(VlanResponse))]
     public class AddMerakiVlansCommand : PSCmdlet
     {
         [Parameter(
@@ -62,14 +62,19 @@ namespace GetMerakiOrgsCmdlet
             string uri;
             uri = $"https://dashboard.meraki.com/api/v0/networks/{netid}/vlans";
             jsonString=JsonSerializer.Serialize<CreateMerakiVlan>(vlan);
+            
             var content = new StringContent(jsonString);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
+            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
             client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
 
             var response = await client.PostAsync(uri,content);
             var contents = await response.Content.ReadAsStringAsync();
+            
             return contents;
         }
 
@@ -100,7 +105,7 @@ namespace GetMerakiOrgsCmdlet
             WriteVerbose("Entering Get Orgs call");
             var list = ProcessRecordAsync(Token, netid, vlan);
 
-            CreateMerakiVlan result = JsonSerializer.Deserialize<CreateMerakiVlan>(list);
+            VlanResponse result = JsonSerializer.Deserialize<VlanResponse>(list);
             WriteObject(result,true);
 
             WriteVerbose("Exiting foreach");
@@ -120,5 +125,26 @@ namespace GetMerakiOrgsCmdlet
         public string applianceIp {get; set;}
         public string subnet {get; set;}
         public string id {get; set;}
+    }
+    public class FixedIpAssignments
+    {
+    }
+
+    public class VlanResponse
+    {
+        public int id { get; set; }
+        public string networkId { get; set; }
+        public string name { get; set; }
+        public string applianceIp { get; set; }
+        public string subnet { get; set; }
+        public FixedIpAssignments fixedIpAssignments { get; set; }
+        public List<object> reservedIpRanges { get; set; }
+        public string dnsNameservers { get; set; }
+        public string dhcpHandling { get; set; }
+        public string dhcpLeaseTime { get; set; }
+        public bool dhcpBootOptionsEnabled { get; set; }
+        public object dhcpBootNextServer { get; set; }
+        public object dhcpBootFilename { get; set; }
+        public List<object> dhcpOptions { get; set; }
     }
 }
