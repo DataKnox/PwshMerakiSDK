@@ -57,25 +57,27 @@ namespace GetMerakiOrgsCmdlet
 
         private static async Task<string> AddVlans(string Token, string netid, CreateMerakiVlan vlan)
         {
-            using HttpClient client = new HttpClient();
-            string jsonString;
-            string uri;
-            uri = $"https://dashboard.meraki.com/api/v0/networks/{netid}/vlans";
-            jsonString=JsonSerializer.Serialize<CreateMerakiVlan>(vlan);
-            
-            var content = new StringContent(jsonString);
-            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-            
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-            client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
-            client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
+            using (HttpClient client = new HttpClient())
+            {
+                string jsonString;
+                string uri;
+                uri = $"https://dashboard.meraki.com/api/v0/networks/{netid}/vlans";
+                jsonString=JsonSerializer.Serialize<CreateMerakiVlan>(vlan);
+                
+                var content = new StringContent(jsonString);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Content-Type", "application/json; charset=utf-8");
+                client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
 
-            var response = await client.PostAsync(uri,content);
-            var contents = await response.Content.ReadAsStringAsync();
-            
-            return contents;
+                var response = await client.PostAsync(uri,content);
+                var contents = await response.Content.ReadAsStringAsync();
+                
+                return contents;
+            }
         }
 
         private static string ProcessRecordAsync(string Token, string netid, CreateMerakiVlan vlan)
