@@ -10,9 +10,9 @@ using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
 {
-    [Cmdlet(VerbsCommon.Get, "merakivlans")]
-    [OutputType(typeof(MerakiVlan))]
-    public class GetMerakiVlansCommand : PSCmdlet
+    [Cmdlet(VerbsCommon.Get, "merakivlan")]
+    [OutputType(typeof(CMerakiVlan))]
+    public class GetMerakiVlanCommand : PSCmdlet
     {
         [Parameter(
             Mandatory = true,
@@ -28,7 +28,14 @@ namespace GetMerakiOrgsCmdlet
             ValueFromPipelineByPropertyName = true)]
         public string netid { get; set; }
 
-        private static async Task<IList<MerakiVlan>> GetVlans(string Token, string netid)
+        [Parameter(
+            Mandatory = true,
+            Position = 2,
+            ValueFromPipeline = true,
+            ValueFromPipelineByPropertyName = true)]
+        public string vlanid { get; set; }
+
+        private static async Task<IList<CMerakiVlan>> GetVlans(string Token, string netid, string vlanid)
         {
             using (HttpClient client = new HttpClient())
             {
@@ -37,15 +44,15 @@ namespace GetMerakiOrgsCmdlet
                     new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
 
-                var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/vlans");
+                var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/vlans/{vlanid}");
                 
-                return await JsonSerializer.DeserializeAsync<IList<MerakiVlan>>(await streamTask);
+                return await JsonSerializer.DeserializeAsync<IList<CMerakiVlan>>(await streamTask);
             }
         }
 
-        private static  IList<MerakiVlan> ProcessRecordAsync(string Token, string netid)
+        private static  IList<CMerakiVlan> ProcessRecordAsync(string Token, string netid, string vlanid)
         {
-            var task = GetVlans(Token, netid);
+            var task = GetVlans(Token, netid, vlanid);
             task.Wait();
             var result = task.Result;
             return result;
@@ -62,7 +69,7 @@ namespace GetMerakiOrgsCmdlet
         protected override void ProcessRecord()
         {
             WriteVerbose("Entering Get Orgs call");
-            var list = ProcessRecordAsync(Token, netid);
+            var list = ProcessRecordAsync(Token, netid, vlanid);
             
             WriteObject(list,true);
 
@@ -77,14 +84,35 @@ namespace GetMerakiOrgsCmdlet
         }
     }
 
-    public class MerakiVlan
+    public class ReservedIpRange
     {
-        public string name {get; set;}
-        public string applianceIp {get; set;}
-        public string subnet {get; set;}
+        public string start { get; set; }
+        public string end { get; set; }
+        public string comment { get; set; }
+    }
+
+    public class DhcpOption
+    {
+        public int code { get; set; }
+        public string type { get; set; }
+        public string value { get; set; }
+    }
+
+    public class CMerakiVlan
+    {
         [JsonPropertyName("id")]
-        public string vlanid {get; set;}
-        public string dnsNameservers {get; set;}
-        public string dhcpHandling {get; set;}
+        public string vlanid { get; set; }
+        public string networkId { get; set; }
+        public string name { get; set; }
+        public string applianceIp { get; set; }
+        public string subnet { get; set; }
+        public List<ReservedIpRange> reservedIpRanges { get; set; }
+        public string dnsNameservers { get; set; }
+        public string dhcpHandling { get; set; }
+        public string dhcpLeaseTime { get; set; }
+        public bool dhcpBootOptionsEnabled { get; set; }
+        public object dhcpBootNextServer { get; set; }
+        public object dhcpBootFilename { get; set; }
+        public List<DhcpOption> dhcpOptions { get; set; }
     }
 }
