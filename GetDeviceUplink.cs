@@ -52,7 +52,7 @@ namespace GetMerakiOrgsCmdlet
             
         }
         //This method calls GetNets and waits on the result. It then returns the List of MerakiDeviceClients objects
-        private static  IList<DeviceUplink> ProcessRecordAsync(string Token, string serial, string netid)
+        private static IList<DeviceUplink> ProcessRecordAsync(string Token, string serial, string netid)
         {
             var task = GetDevUplinks(Token, serial, netid);
             task.Wait();
