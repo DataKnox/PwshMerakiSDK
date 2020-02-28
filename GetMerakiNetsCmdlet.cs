@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
 {
-     [Cmdlet(VerbsCommon.Get, "merakinets")]
+    [Cmdlet(VerbsCommon.Get, "merakinets")]
     [OutputType(typeof(MerakiNet))]
     public class GetMerakiNetsCommand : PSCmdlet
     {
@@ -37,15 +37,15 @@ namespace GetMerakiOrgsCmdlet
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
-                
+
                 var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/organizations/{orgid}/networks");
-                
+
                 return await JsonSerializer.DeserializeAsync<IList<MerakiNet>>(await streamTask);
             }
-            
+
         }
         //This method calls GetNets and waits on the result. It then returns the List of MerakiNet objects
-        private static  IList<MerakiNet> ProcessRecordAsync(string Token, string orgid)
+        private static IList<MerakiNet> ProcessRecordAsync(string Token, string orgid)
         {
             var task = GetNets(Token, orgid);
             task.Wait();
@@ -65,8 +65,8 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("Entering Get Orgs call");
             var list = ProcessRecordAsync(Token, orgid);
-            
-            WriteObject(list,true);
+
+            WriteObject(list, true);
 
 
             WriteVerbose("Exiting foreach");
@@ -78,7 +78,7 @@ namespace GetMerakiOrgsCmdlet
             WriteVerbose("End!");
         }
     } //end Get-MerakiNets
-    
+
     public class MerakiNet
     {
         public bool disableMyMerakiCom { get; set; }
@@ -87,7 +87,7 @@ namespace GetMerakiOrgsCmdlet
         public string netid { get; set; }
         public string name { get; set; }
         public string organizationId { get; set; }
-        public string[] tags { get; set; }
+        //public object[] tags { get; set; }
         public string timeZone { get; set; }
         public string type { get; set; }
     }
