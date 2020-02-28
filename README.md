@@ -12,6 +12,8 @@ You can get Powershell Core v7 here: https://github.com/PowerShell/PowerShell
 
 This repo is still a work in progress, and I endeavor to add a new Cmdlet every other day. Add, Set, and Delete cmdlets take a little more time to build because of their parameters.
 
+Eventually this repo will be listed on the PSGallery, and will be able to be installed with just Install-Module. Until then, these cmdlets are still usable and can provide value to Powershell users.
+
 ## Instructions
 
 Sample code works like so: Clone the repo to a folder of your desire
