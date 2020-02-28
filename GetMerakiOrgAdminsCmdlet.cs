@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
 {
-     [Cmdlet(VerbsCommon.Get, "MerakiAdmins")]
+    [Cmdlet(VerbsCommon.Get, "MerakiAdmins")]
     [OutputType(typeof(MerakiAdmin))]
     public class GetMerakiAdminsCommand : PSCmdlet
     {
@@ -37,19 +37,19 @@ namespace GetMerakiOrgsCmdlet
                 client.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
-                
+
                 var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0//organizations/{orgid}/admins");
                 var options = new JsonSerializerOptions
                 {
-                    IgnoreNullValues = true                    
+                    IgnoreNullValues = true
                 };
-                
-                return await JsonSerializer.DeserializeAsync<IList<MerakiAdmin>>(await streamTask,options);
+
+                return await JsonSerializer.DeserializeAsync<IList<MerakiAdmin>>(await streamTask, options);
             }
-            
+
         }
         //This method calls GetNets and waits on the result. It then returns the List of MerakiNet objects
-        private static  IList<MerakiAdmin> ProcessRecordAsync(string Token, string orgid)
+        private static IList<MerakiAdmin> ProcessRecordAsync(string Token, string orgid)
         {
             var task = GetNets(Token, orgid);
             task.Wait();
@@ -69,8 +69,8 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("Entering Get Orgs call");
             var list = ProcessRecordAsync(Token, orgid);
-            
-            WriteObject(list,true);
+
+            WriteObject(list, true);
 
 
             WriteVerbose("Exiting foreach");
@@ -82,7 +82,7 @@ namespace GetMerakiOrgsCmdlet
             WriteVerbose("End!");
         }
     } //end Get-MerakiNets
-    
+
     public class Tag
     {
         public string tag { get; set; }
@@ -97,13 +97,14 @@ namespace GetMerakiOrgsCmdlet
 
     public class MerakiAdmin
     {
-        public string id { get; set; }
+        [JsonPropertyName("id")]
+        public string adminid { get; set; }
         public string name { get; set; }
         public string email { get; set; }
         public string orgAccess { get; set; }
         public string accountStatus { get; set; }
         public bool twoFactorAuthEnabled { get; set; }
-        public bool hasApiKey { get; set; }        
+        public bool hasApiKey { get; set; }
         public object lastActive { get; set; }
         public List<Tag> tags { get; set; }
         public List<Network> networks { get; set; }
