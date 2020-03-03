@@ -46,7 +46,7 @@ powershell
 
 Import the module
 ```
-Import-Module MerakiPosh/MerakiSDK/PwshMerakiSDK/bin/Debug/netstandard2.0/GetMerakiOrgsCmdlet.dll
+Import-Module MerakiPosh/PwshMerakiSDK/bin/Debug/netstandard2.0/GetMerakiOrgsCmdlet.dll
 ```
 
 View all available Cmdlets with 
