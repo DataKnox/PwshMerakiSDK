@@ -10,7 +10,7 @@ using System.Collections.Generic;
 
 namespace GetMerakiOrgsCmdlet
 {
-    [Cmdlet(VerbsCommon.Set, "MxL7FirewallRule")]
+    [Cmdlet(VerbsCommon.Set, "MxL7Firewall")]
     [OutputType(typeof(L7FirewallRule))]
     public class SetL7FirewallRuleCommand : PSCmdlet
     {
