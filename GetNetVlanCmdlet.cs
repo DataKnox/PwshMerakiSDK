@@ -101,7 +101,7 @@ namespace GetMerakiOrgsCmdlet
     public class CMerakiVlan
     {
         [JsonPropertyName("id")]
-        public string vlanid { get; set; }
+        public int vlanid { get; set; }
         public string networkId { get; set; }
         public string name { get; set; }
         public string applianceIp { get; set; }

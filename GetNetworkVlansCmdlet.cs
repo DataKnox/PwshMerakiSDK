@@ -21,11 +21,11 @@ namespace GetMerakiOrgsCmdlet
             ValueFromPipelineByPropertyName = true)]
         public string Token { get; set; }
 
-       [Parameter(
-            Mandatory = true,
-            Position = 1,
-            ValueFromPipeline = true,
-            ValueFromPipelineByPropertyName = true)]
+        [Parameter(
+             Mandatory = true,
+             Position = 1,
+             ValueFromPipeline = true,
+             ValueFromPipelineByPropertyName = true)]
         public string netid { get; set; }
 
         private static async Task<IList<MerakiVlan>> GetVlans(string Token, string netid)
@@ -38,12 +38,12 @@ namespace GetMerakiOrgsCmdlet
                 client.DefaultRequestHeaders.Add("X-Cisco-Meraki-API-Key", Token);
 
                 var streamTask = client.GetStreamAsync($"https://dashboard.meraki.com/api/v0/networks/{netid}/vlans");
-                
+
                 return await JsonSerializer.DeserializeAsync<IList<MerakiVlan>>(await streamTask);
             }
         }
 
-        private static  IList<MerakiVlan> ProcessRecordAsync(string Token, string netid)
+        private static IList<MerakiVlan> ProcessRecordAsync(string Token, string netid)
         {
             var task = GetVlans(Token, netid);
             task.Wait();
@@ -63,8 +63,8 @@ namespace GetMerakiOrgsCmdlet
         {
             WriteVerbose("Entering Get Orgs call");
             var list = ProcessRecordAsync(Token, netid);
-            
-            WriteObject(list,true);
+
+            WriteObject(list, true);
 
 
             WriteVerbose("Exiting foreach");
@@ -79,12 +79,12 @@ namespace GetMerakiOrgsCmdlet
 
     public class MerakiVlan
     {
-        public string name {get; set;}
-        public string applianceIp {get; set;}
-        public string subnet {get; set;}
+        public string name { get; set; }
+        public string applianceIp { get; set; }
+        public string subnet { get; set; }
         [JsonPropertyName("id")]
-        public string vlanid {get; set;}
-        public string dnsNameservers {get; set;}
-        public string dhcpHandling {get; set;}
+        public int vlanid { get; set; }
+        public string dnsNameservers { get; set; }
+        public string dhcpHandling { get; set; }
     }
 }
